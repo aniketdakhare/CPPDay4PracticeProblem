@@ -5,7 +5,7 @@ using namespace std;
 
 void printArray(int array[], int size)  
 {
-    cout << "Sorted Array: ";
+    cout << "\nSorted Array: ";
     for (int n = 0; n < size; ++n) 
     {
         cout << array[n] << "  ";
@@ -30,7 +30,6 @@ void bubbleSort(int array[], int size)
         if (flag == 0)
             break;   
     }
-    printArray(array, size);
 }
 
 void insertionSort(int array[], int size)
@@ -46,13 +45,63 @@ void insertionSort(int array[], int size)
         }
         array[vacantIndex] = number;
     }
-    printArray(array, size);
+}
+
+void merge(int leftArray[], int leftArraySize, int rightArray[], int rightArraySize, int completeArray[])
+{
+    int i = 0, j = 0 , k = 0;
+    while (i < leftArraySize && j < rightArraySize)
+    {
+        if (leftArray[i] <= rightArray[j])
+        {
+            completeArray[k] = leftArray[i];
+            i++;
+        }
+        else
+        {
+            completeArray[k] = rightArray[j];
+            j++;
+        }
+        k++;        
+    }
+    while (i < leftArraySize)
+    {
+        completeArray[k] = leftArray[i];
+        i++;
+        k++;
+    }
+    while (j < rightArraySize)
+    {
+        completeArray[k] = rightArray[j];
+        j++;
+        k++;
+    }
+}
+
+void mergeSort(int array[], int size)
+{
+    if (size > 1)
+    {
+        int mid = size / 2;
+        int leftArray[mid], rightArray[size - mid];
+        for (int i = 0; i < mid; i++)
+        {
+            leftArray[i] = array[i];
+        }
+        for (int i = mid; i < size; i++)
+        {
+            rightArray[i - mid] = array[i];
+        }
+        mergeSort(leftArray, mid);
+        mergeSort(rightArray, (size - mid));
+        merge(leftArray, mid, rightArray, (size -mid), array);
+    }
 }
 
 void selectSortType(int array[], int size)
 {
     int select;
-    cout << "Select your choice of sorting: \n1: Bubble Sort \n2: Insertion sort \n3: Quick sort \n4: Merge sort\n";
+    cout << "\nSelect your choice of sorting: \n1: Bubble Sort \n2: Insertion sort \n3: Quick sort \n4: Merge sort\n";
     cin >> select;
     switch(select)
     {
@@ -62,18 +111,22 @@ void selectSortType(int array[], int size)
         case 2:
             insertionSort(array, size);
             break;
+        case 4:
+            mergeSort(array, size);
+            break;
         default:
-            cout << "Invalid Input" << endl;
+            cout << "\nInvalid Input" << endl;
     }
+    printArray(array, size);
 }
 
 int main()
 {
     int size;
-    cout << "Enter the size of an Array: \n";
+    cout << "\nEnter the size of an Array: \n";
     cin >> size;
     int userArray[size];
-    cout << "Enter elements of array: \n";
+    cout << "\nEnter elements of array: \n";
     for (int i = 0; i < size; i++)
     {
         cin >> userArray[i];
